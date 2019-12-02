@@ -44,7 +44,7 @@ set_config()
 
 sudo apt install debootstrap -y
 sudo apt install golang-go -y
-sudo apt install qemu-kvm
+sudo apt install qemu-kvm -y
 if ! id -nG "$USER" | grep -qw "kvm" ; then
 	sudo addgroup $USER kvm
 fi
