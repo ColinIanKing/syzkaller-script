@@ -65,7 +65,7 @@ fi
 
 mkdir -p $HOME/go/src/github.com/google/syzkaller/workdir
 
-if [ ! -d linux ]; then
+if [ ! -d kernel ]; then
 	git clone ${REPO} kernel --depth 1
 else
 	git pull
