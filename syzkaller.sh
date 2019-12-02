@@ -67,8 +67,16 @@ mkdir -p $HOME/go/src/github.com/google/syzkaller/workdir
 
 if [ ! -d kernel ]; then
 	git clone ${REPO} kernel --depth 1
+	if [ $? -ne 0 ]; then
+		echo "failed to clone ${REPO}"
+		exit 1
+	fi
 else
 	git pull
+	if [ $? -ne 0 ]; then
+		echo "failed to pull updates"
+		exit 1
+	fi
 fi
 
 if [ ! -f kernel/vmlinux ]; then
