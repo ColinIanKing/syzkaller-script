@@ -56,6 +56,10 @@ if [ ! -f $HOME/go/src/github.com/google/syzkaller/bin/syz-manager ]; then
 	go get -u -d github.com/google/syzkaller/...
 	cd $HOME/go/src/github.com/google/syzkaller/
 	make -j ${NUMCPUS}
+	if [ $? -ne 0 ]; then
+		echo "failed to build syzkaller"
+		exit 1
+	fi
 	cd ${HERE}
 fi
 
@@ -76,6 +80,11 @@ if [ ! -f kernel/vmlinux ]; then
 	set_config
 	yes "Y" | make -j ${NUMCPUS}
 	cd ${HERE}
+
+	if [ ! -f kernel/arch/x86/boot/bzImage ]; then
+		echo "failed to build kernel/arch/x86/boot/bzImage" 
+		exit 1;
+	fi
 fi
 
 if [ ! -f image/buster.img ]; then
@@ -85,6 +94,10 @@ if [ ! -f image/buster.img ]; then
 	chmod +x create-image.sh
 	chmod +x ./create-image.sh
 	./create-image.sh --distribution ${DEBIAN_RELEASE}
+	if [ $? -ne 0 ]; then
+		echo "creating VM image failed"
+		exit 1
+	fi
 	cd ..
 fi
 
